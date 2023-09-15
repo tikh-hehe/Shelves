@@ -50,6 +50,7 @@ final class AuthTextField: UITextField {
         layer.cornerRadius = 8
         layer.borderWidth = 1
         layer.borderColor = Constants.Colors.textSecondary2.cgColor
+        
     }
     
     required init?(coder: NSCoder) {
@@ -92,5 +93,17 @@ final class AuthTextField: UITextField {
         
         rightView = view
         rightViewMode = .always
+    }
+    
+    private func wrongEmailLabel() {
+        let label = UILabel()
+        label.text = "Некорректный ввод"
+        label.textColor = .red
+        
+        addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview().offset(10)
+        }
     }
 }
