@@ -28,11 +28,22 @@ final class RegisterVC: BaseController<RegisterView> {
 extension RegisterVC: RegisterViewDelegate {
     
     func nextButtonTapped() {
-        print(#function)
-    }
-    
-    func textFieldDidChange() {
-        print(#function)
+        AuthManager.shared.createUser(
+            email: myView.mailTextField.text ?? "",
+            password: myView.passwordTextField.text ?? ""
+        ) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let user):
+                let vc = HomeVC(email: user.email ?? "Нет почты")
+                navigationController?.pushViewController(vc, animated: true)
+                
+            case .failure(let error):
+                let alert = UIAlertController(title: "Ошибка", message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "ОК", style: .cancel))
+                present(alert, animated: true)
+            }
+        }
     }
 }
 
@@ -44,6 +55,7 @@ extension RegisterVC: UITextFieldDelegate {
         guard !textField.text!.isEmpty else {
             fieldValidations[textField.tag] = false
             showErrorOnTextField(false, on: textField)
+            checkValidations()
             return
         }
         
@@ -51,9 +63,9 @@ extension RegisterVC: UITextFieldDelegate {
         
         switch textField.tag {
         case 0:
-            isValid = isValidEmailAddr(strToValidate: myView.mailTextField.text!)
+            isValid = isValidEmailAddr(strToValidate: textField.text ?? "")
         case 1:
-            isValid = isValidPassword(strToValidate: myView.passwordTextField.text!)
+            isValid = isValidPassword(strToValidate: textField.text ?? "")
         case 2:
             isValid = myView.passwordTextField.text! == myView.repeatPasswordTextField.text!
         default:
@@ -62,10 +74,11 @@ extension RegisterVC: UITextFieldDelegate {
         
         fieldValidations[textField.tag] = isValid
         showErrorOnTextField(!isValid, on: myView.allTextFields[textField.tag])
-        
-        let allFieldsAreValid = fieldValidations.allSatisfy({$0})
-        myView.nextButton.isEnabled = allFieldsAreValid
-        myView.nextButton.alpha = allFieldsAreValid ? 1 : 0.5
+        checkValidations()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 
@@ -74,7 +87,7 @@ extension RegisterVC: UITextFieldDelegate {
 extension RegisterVC {
     
     private func isValidEmailAddr(strToValidate: String) -> Bool {
-        let emailValidationRegex = "^[\\p{L}0-9!#$%&'*+\\/=?^_`{|}~-][\\p{L}0-9.!#$%&'*+\\/=?^_`{|}~-]{0,63}@[\\p{L}0-9-]+(?:\\.[\\p{L}0-9-]{2,7})*$"
+        let emailValidationRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailValidationPredicate = NSPredicate(format: "SELF MATCHES %@", emailValidationRegex)
         return emailValidationPredicate.evaluate(with: strToValidate)
     }
@@ -98,5 +111,11 @@ extension RegisterVC {
             textField.layer.borderColor = Constants.Colors.textSecondary2.cgColor
             errorLabel.removeFromSuperview()
         }
+    }
+    
+    private func checkValidations() {
+        let allFieldsAreValid = fieldValidations.allSatisfy({$0})
+        myView.nextButton.isEnabled = allFieldsAreValid
+        myView.nextButton.alpha = allFieldsAreValid ? 1 : 0.5
     }
 }

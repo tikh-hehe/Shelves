@@ -17,6 +17,10 @@
 		B913DF192AAF4FCC00A41519 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B913DF182AAF4FCC00A41519 /* RegisterVC.swift */; };
 		B913DF1C2AAF534000A41519 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = B913DF1B2AAF534000A41519 /* SnapKit-Dynamic */; };
 		B913DF1E2AAF69F000A41519 /* AuthTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B913DF1D2AAF69F000A41519 /* AuthTextField.swift */; };
+		B9A4A6862AB4F2B400C62E99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B9A4A6852AB4F2B400C62E99 /* GoogleService-Info.plist */; };
+		B9A4A6892AB4F58600C62E99 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B9A4A6882AB4F58600C62E99 /* FirebaseAuth */; };
+		B9A4A68C2AB5BE0D00C62E99 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A4A68B2AB5BE0D00C62E99 /* HomeVC.swift */; };
+		B9A4A68F2AB5CE2800C62E99 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A4A68E2AB5CE2800C62E99 /* AuthManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +35,9 @@
 		B913DF122AAF4DB200A41519 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B913DF182AAF4FCC00A41519 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		B913DF1D2AAF69F000A41519 /* AuthTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthTextField.swift; sourceTree = "<group>"; };
+		B9A4A6852AB4F2B400C62E99 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B9A4A68B2AB5BE0D00C62E99 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		B9A4A68E2AB5CE2800C62E99 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B913DF1C2AAF534000A41519 /* SnapKit-Dynamic in Frameworks */,
+				B9A4A6892AB4F58600C62E99 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +59,7 @@
 				B908B2992AB33BED0061F857 /* Application */,
 				B908B2982AB33BE60061F857 /* Modules */,
 				B908B2972AB33BDC0061F857 /* Views */,
+				B9A4A68D2AB5CDF100C62E99 /* Managers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -78,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				B908B29A2AB33C200061F857 /* Register */,
+				B9A4A68A2AB5BDDB00C62E99 /* Home */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -122,8 +132,25 @@
 				B908B2952AB33B5E0061F857 /* Sources */,
 				B908B2962AB33B720061F857 /* Resources */,
 				B913DF122AAF4DB200A41519 /* Info.plist */,
+				B9A4A6852AB4F2B400C62E99 /* GoogleService-Info.plist */,
 			);
 			path = Shelves;
+			sourceTree = "<group>";
+		};
+		B9A4A68A2AB5BDDB00C62E99 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B9A4A68B2AB5BE0D00C62E99 /* HomeVC.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B9A4A68D2AB5CDF100C62E99 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B9A4A68E2AB5CE2800C62E99 /* AuthManager.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,6 +171,7 @@
 			name = Shelves;
 			packageProductDependencies = (
 				B913DF1B2AAF534000A41519 /* SnapKit-Dynamic */,
+				B9A4A6882AB4F58600C62E99 /* FirebaseAuth */,
 			);
 			productName = Shelves;
 			productReference = B913DF012AAF4DB100A41519 /* Shelves.app */;
@@ -175,6 +203,7 @@
 			mainGroup = B913DEF82AAF4DB100A41519;
 			packageReferences = (
 				B913DF1A2AAF534000A41519 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B9A4A6872AB4F58500C62E99 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = B913DF022AAF4DB100A41519 /* Products */;
 			projectDirPath = "";
@@ -192,6 +221,7 @@
 			files = (
 				B913DF112AAF4DB200A41519 /* LaunchScreen.storyboard in Resources */,
 				B913DF0E2AAF4DB200A41519 /* Assets.xcassets in Resources */,
+				B9A4A6862AB4F2B400C62E99 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,6 +233,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B908B2942AB332770061F857 /* RegisterView.swift in Sources */,
+				B9A4A68F2AB5CE2800C62E99 /* AuthManager.swift in Sources */,
+				B9A4A68C2AB5BE0D00C62E99 /* HomeVC.swift in Sources */,
 				B866E8B32AB087F000A0A5EB /* Constants.swift in Sources */,
 				B913DF192AAF4FCC00A41519 /* RegisterVC.swift in Sources */,
 				B913DF1E2AAF69F000A41519 /* AuthTextField.swift in Sources */,
@@ -434,6 +466,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		B9A4A6872AB4F58500C62E99 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -441,6 +481,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B913DF1A2AAF534000A41519 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = "SnapKit-Dynamic";
+		};
+		B9A4A6882AB4F58600C62E99 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9A4A6872AB4F58500C62E99 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

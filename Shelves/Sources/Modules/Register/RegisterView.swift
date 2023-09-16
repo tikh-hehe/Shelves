@@ -9,7 +9,6 @@ import UIKit
 
 protocol RegisterViewDelegate: AnyObject {
     func nextButtonTapped()
-    func textFieldDidChange()
 }
 
 final class RegisterView: UIView {
@@ -49,21 +48,18 @@ final class RegisterView: UIView {
     private(set) lazy var mailTextField: UITextField = {
         let textField = AuthTextField(placeholder: "Электронная почта", leftImage: Constants.Images.profile)
         textField.keyboardType = .emailAddress
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         textField.tag = 0
         return textField
     }()
     
     private(set) lazy var passwordTextField: UITextField = {
         let textField = AuthTextField(placeholder: "Введите пароль", leftImage: Constants.Images.lock, isSecured: true)
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         textField.tag = 1
         return textField
     }()
     
     private(set) lazy var repeatPasswordTextField: UITextField = {
         let textField = AuthTextField(placeholder: "Повторите пароль", leftImage: Constants.Images.lock, isSecured: true)
-        textField.addTarget(self, action: #selector(textFieldDidChange), for: .editingChanged)
         textField.tag = 2
         return textField
     }()
@@ -169,10 +165,6 @@ final class RegisterView: UIView {
     
     @objc private func nextButtonTapped() {
         delegate?.nextButtonTapped()
-    }
-    
-    @objc private func textFieldDidChange() {
-        delegate?.textFieldDidChange()
     }
     
     // MARK: - Layout
