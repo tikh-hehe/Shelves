@@ -60,7 +60,7 @@ final class AuthTextField: UITextField {
     // MARK: - Actions
     
     @objc func isSecuredButtonTapped(_ button: UIButton) {
-        let image = isPasswordHidden ? Constants.Images.eyeSlashBlack : Constants.Images.eyeSlash
+        let image = isPasswordHidden ? Constants.Images.eyeOpen : Constants.Images.eyeSlash
         button.setImage(image, for: .normal)
         isSecureTextEntry = !isPasswordHidden
         isPasswordHidden.toggle()

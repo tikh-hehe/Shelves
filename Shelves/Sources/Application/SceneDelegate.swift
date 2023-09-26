@@ -15,10 +15,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         self.window = UIWindow(windowScene: windowScene)
 
-        let registerVC = RegisterVC()
-        let registerNavController = UINavigationController(rootViewController: registerVC)
+        let authVC = AuthVC()
+        let authNavController = UINavigationController(rootViewController: authVC)
         
-        window?.rootViewController = registerNavController
+        window?.rootViewController = authNavController
         window?.makeKeyAndVisible()
     }
 
@@ -31,5 +31,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {}
 
     func sceneDidEnterBackground(_ scene: UIScene) {}
-
 }

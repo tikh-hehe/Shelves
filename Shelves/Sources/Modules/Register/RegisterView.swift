@@ -9,6 +9,7 @@ import UIKit
 
 protocol RegisterViewDelegate: AnyObject {
     func nextButtonTapped()
+    func signInButtonTapped()
 }
 
 final class RegisterView: UIView {
@@ -45,22 +46,22 @@ final class RegisterView: UIView {
         return stackView
     }()
     
-    private(set) lazy var mailTextField: UITextField = {
-        let textField = AuthTextField(placeholder: "Электронная почта", leftImage: Constants.Images.profile)
-        textField.keyboardType = .emailAddress
-        textField.tag = 0
+    private(set) lazy var mailTextField: TextFieldWithErrorView = {
+        let textField = TextFieldWithErrorView(placeholder: "Электронная почта", leftImage: Constants.Images.profile)
+        textField.authTextField.keyboardType = .emailAddress
+        textField.authTextField.tag = 0
         return textField
     }()
     
-    private(set) lazy var passwordTextField: UITextField = {
-        let textField = AuthTextField(placeholder: "Введите пароль", leftImage: Constants.Images.lock, isSecured: true)
-        textField.tag = 1
+    private(set) lazy var passwordTextField: TextFieldWithErrorView = {
+        let textField = TextFieldWithErrorView(placeholder: "Введите пароль", leftImage: Constants.Images.lock, isSecured: true)
+        textField.authTextField.tag = 1
         return textField
     }()
     
-    private(set) lazy var repeatPasswordTextField: UITextField = {
-        let textField = AuthTextField(placeholder: "Повторите пароль", leftImage: Constants.Images.lock, isSecured: true)
-        textField.tag = 2
+    private(set) lazy var repeatPasswordTextField: TextFieldWithErrorView = {
+        let textField = TextFieldWithErrorView(placeholder: "Повторите пароль", leftImage: Constants.Images.lock, isSecured: true)
+        textField.authTextField.tag = 2
         return textField
     }()
 
@@ -109,38 +110,14 @@ final class RegisterView: UIView {
         button.setTitle("Войти", for: .normal)
         button.setTitleColor(Constants.Colors.main, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         return button
     }()
-    
-    private let mailTextFieldErrorLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Некорректный ввод"
-        label.font = .systemFont(ofSize: 8)
-        label.textColor = .red
-        return label
-    }()
-    
-    private let passwordTextFieldErrorLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Некорректный ввод"
-        label.font = .systemFont(ofSize: 8)
-        label.textColor = .red
-        return label
-    }()
-    
-    private let repeatPasswordTextFieldErrorLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Некорректный ввод"
-        label.font = .systemFont(ofSize: 8)
-        label.textColor = .red
-        return label
-    }()
-    
+
     // MARK: - Properties
     
     weak var delegate: RegisterViewDelegate?
     lazy var allTextFields = [mailTextField, passwordTextField, repeatPasswordTextField]
-    lazy var allErrorLabels = [mailTextFieldErrorLabel, passwordTextFieldErrorLabel, repeatPasswordTextFieldErrorLabel]
     
     // MARK: - Init
     
@@ -158,13 +135,17 @@ final class RegisterView: UIView {
     // MARK: - Public Functions
     
     func setTextFieldsDelegate(_ delegate: UITextFieldDelegate) {
-        allTextFields.forEach { $0.delegate = delegate }
+        allTextFields.forEach { $0.authTextField.delegate = delegate }
     }
     
     // MARK: - Actions
     
     @objc private func nextButtonTapped() {
         delegate?.nextButtonTapped()
+    }
+    
+    @objc private func signInButtonTapped() {
+        delegate?.signInButtonTapped()
     }
     
     // MARK: - Layout

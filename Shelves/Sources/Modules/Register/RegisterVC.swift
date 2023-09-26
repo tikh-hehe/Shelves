@@ -11,7 +11,8 @@ final class RegisterVC: BaseController<RegisterView> {
     
     // MARK: - Properties
     
-    private var fieldValidations = [false, false, false]
+    private let validationManager = ValidationManager()
+    var fieldValidations = [false, false, false]
     
     // MARK: - Lifecycle
     
@@ -29,8 +30,8 @@ extension RegisterVC: RegisterViewDelegate {
     
     func nextButtonTapped() {
         AuthManager.shared.createUser(
-            email: myView.mailTextField.text ?? "",
-            password: myView.passwordTextField.text ?? ""
+            email: myView.mailTextField.authTextField.text ?? "",
+            password: myView.passwordTextField.authTextField.text ?? ""
         ) { [weak self] result in
             guard let self else { return }
             switch result {
@@ -45,6 +46,10 @@ extension RegisterVC: RegisterViewDelegate {
             }
         }
     }
+    
+    func signInButtonTapped() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: - UITextFieldDelegate
@@ -54,8 +59,9 @@ extension RegisterVC: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard !textField.text!.isEmpty else {
             fieldValidations[textField.tag] = false
-            showErrorOnTextField(false, on: textField)
-            checkValidations()
+            myView.allTextFields[textField.tag].showError(false)
+            myView.nextButton.isEnabled = validationManager.checkValidations(fieldValidations)
+            myView.nextButton.alpha = validationManager.checkValidations(fieldValidations) ? 1 : 0.5
             return
         }
         
@@ -63,59 +69,23 @@ extension RegisterVC: UITextFieldDelegate {
         
         switch textField.tag {
         case 0:
-            isValid = isValidEmailAddr(strToValidate: textField.text ?? "")
+            isValid = validationManager.isValidEmailAddr(strToValidate: textField.text ?? "")
         case 1:
-            isValid = isValidPassword(strToValidate: textField.text ?? "")
+            isValid = validationManager.isValidPassword(strToValidate: textField.text ?? "")
         case 2:
-            isValid = myView.passwordTextField.text! == myView.repeatPasswordTextField.text!
+            isValid = myView.passwordTextField.authTextField.text! == myView.repeatPasswordTextField.authTextField.text!
         default:
             break
         }
         
         fieldValidations[textField.tag] = isValid
-        showErrorOnTextField(!isValid, on: myView.allTextFields[textField.tag])
-        checkValidations()
+        myView.allTextFields[textField.tag].showError(!isValid, text: Constants.ErrorNames.incorrectInput)
+
+        myView.nextButton.isEnabled =  validationManager.checkValidations(fieldValidations)
+        myView.nextButton.alpha =  validationManager.checkValidations(fieldValidations) ? 1 : 0.5
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-    }
-}
-
-// MARK: - Validation
-
-extension RegisterVC {
-    
-    private func isValidEmailAddr(strToValidate: String) -> Bool {
-        let emailValidationRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailValidationPredicate = NSPredicate(format: "SELF MATCHES %@", emailValidationRegex)
-        return emailValidationPredicate.evaluate(with: strToValidate)
-    }
-    
-    private func isValidPassword(strToValidate: String) -> Bool {
-        let passwordValidationRegex =  "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,20}$"
-        let passwordValidationPredicate = NSPredicate(format: "SELF MATCHES %@", passwordValidationRegex)
-        return passwordValidationPredicate.evaluate(with: strToValidate)
-    }
-    
-    private func showErrorOnTextField(_ state: Bool, on textField: UITextField) {
-        let errorLabel = myView.allErrorLabels[textField.tag]
-        if state {
-            textField.layer.borderColor = UIColor.red.cgColor
-            myView.addSubview(errorLabel)
-            errorLabel.snp.makeConstraints { make in
-                make.leading.equalToSuperview().inset(24)
-                make.top.equalTo(textField.snp.bottom)
-            }
-        } else {
-            textField.layer.borderColor = Constants.Colors.textSecondary2.cgColor
-            errorLabel.removeFromSuperview()
-        }
-    }
-    
-    private func checkValidations() {
-        let allFieldsAreValid = fieldValidations.allSatisfy({$0})
-        myView.nextButton.isEnabled = allFieldsAreValid
-        myView.nextButton.alpha = allFieldsAreValid ? 1 : 0.5
     }
 }
